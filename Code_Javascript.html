@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+        <title>Algebraic Equation Solver</title>
+</head>
+<body>
+    <form>
+        <input type="button" onclick="equate()" value="Click Me to Solve!">
+    </form>
+</body>
+<script>
+   
+function equate()
+{
+var e = prompt("Enter the equation: ");
+if(!isValid(e))
+{
+alert("Equation is invalid")
+}
+else
+{
+var s=[], e=e.split(' ')
+var temp
+for (var i in e) {
+	var t=e[i], n=+t
+	if (n == t)
+		s.push(n)
+	else {
+		var x1=s.pop(), x2=s.pop()
+		switch (t) {
+			case '+': s.push(x1+x2); break;
+			case '-': s.push(x1-x2); break;
+			case '*': s.push(x1*x2); break;
+			case '/': s.push(x1/x2); break;
+			case '^': s.push(Math.pow(x1,x2)); 
+                        break;
+		}
+	}
+	document.write(t, ': ', s, '<br>')
+}
+}
+}
+function isLetter(s) 
+    {
+        return s.trim().length === 1 && s.match(/[a-z]/i);
+    }    
+        
+    function isValid(eq) 
+    {
+        var invalidOperatorPairs = ["**", "*/", "/*", "//", "()", "^^", "^/", "/^", "^*", "*^", "-)", "+)", "*)", "/*", "^)", "-*", "-/", "-^", "+*", "+/", "+^", "=*","=)", "(*", "(/", "(^","/)","*)","+)","-)","^)"]
+        var brackets = 0;
+        for (var i = 0, len = eq.length; i < len; i++) 
+        {
+            var temp = eq[i];
+            if (temp === "(") 
+            {
+                brackets++;
+            } 
+            else if (temp === ")") 
+            {
+                brackets--;
+                if (brackets < 0) 
+                {
+                    return false;
+                }
+            }
+            for (var j = 0, operatorlen = invalidOperatorPairs.length; j < operatorlen; j++) 
+            {
+                if (eq[i - 1] == invalidOperatorPairs[j][0] && temp == invalidOperatorPairs[j][1] ) 
+                {
+                    return false;
+                }
+            }
+        }
+        if (brackets !== 0) 
+        {
+            return false;
+        }
+        var sections = eq.split(/[\+\=\-\*\/\^\)\(]/g);
+        
+        for (i = 0; i < sections.length; i++) 
+        {
+            if ((sections[i].length > 0)  && !((Number(sections[i]) !== NaN && isFinite(sections[i])) || (isLetter(sections[i])))) 
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+</script>
+</html>
